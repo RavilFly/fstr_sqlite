@@ -13,9 +13,16 @@ class SubmitData(generics. ListCreateAPIView):
         if serializer.is_valid():
             serializer.save()
             return Response({
-                'status': status.HTTP_200_OK,
+                'status': 200,
                 'message': None,
                 'id': serializer.data['id'],
             })
+        elif status.HTTP_400_BAD_REQUEST:
+            return Response({
+                    'status': status.HTTP_400_BAD_REQUEST,
+                    'message': 'Ошибка в запросе, проверьте поля.',
+                    'id': None,
+                })
+
         else:
             return self.create(request, *args, **kwargs)
