@@ -33,6 +33,7 @@ class PerevalAdded(models.Model):
     summer = models.CharField(max_length=5, default='')
     autumn = models.CharField(max_length=5, default='')
     coords = models.ForeignKey('Coords', on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey('Users', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'pereval_added'
@@ -59,18 +60,18 @@ class Images(models.Model):
     class Meta:
         db_table = 'images'
 
-class PerevalImages(models.Model):
-    pereval = models.ForeignKey('PerevalAdded', on_delete=models.CASCADE)
-    image = models.ForeignKey('Images', on_delete=models.CASCADE, blank=True, null=True)
-
-    class Meta:
-        db_table = 'pereval_images'
+# class PerevalImages(models.Model):
+#     pereval = models.ForeignKey('PerevalAdded', on_delete=models.CASCADE)
+#     image = models.ForeignKey('Images', on_delete=models.CASCADE, blank=True, null=True)
+#
+#     class Meta:
+#         db_table = 'pereval_images'
 
 class Users(models.Model):
     name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255, blank=True, null=True)
     mid_name = models.CharField(max_length=255, blank=True, null=True)
-    email = models.CharField(max_length=255, unique=True)
+    email = models.CharField(max_length=255)
     phone = models.CharField(max_length=15, blank=True, null=True)
 
     class Meta:
