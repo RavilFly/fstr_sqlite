@@ -2,15 +2,12 @@ from drf_writable_nested import WritableNestedModelSerializer
 from rest_framework import serializers
 from .models import PerevalAdded, Coords, Images, Users
 
-class UserPerevalSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PerevalAdded
-        fields = ('id', 'title')
 
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
-        fields = ['name', 'email', 'phone']
+        fields = ['id','name', 'mid_name', 'last_name', 'email', 'phone']
+
 
 class ImagesSerializer(serializers.ModelSerializer):
     img = serializers.URLField()
@@ -64,11 +61,10 @@ class PerevalAddedSerializer(WritableNestedModelSerializer):
             instance_user = self.instance.user
             data_user = data.get('user')
             if data_user and (
-                (
-                instance_user.name != data_user['name'] and
-                instance_user.last_name != data_user['last_name'] and
-                instance_user.mid_name != data_user['mid_name']
-                ) or
+
+                instance_user.name != data_user['name'] or
+                instance_user.last_name != data_user['last_name'] or
+                instance_user.mid_name != data_user['mid_name'] or
                 instance_user.email != data_user['email'] or
                 instance_user.phone != data_user['phone']
 
@@ -77,3 +73,14 @@ class PerevalAddedSerializer(WritableNestedModelSerializer):
 
                 raise serializers.ValidationError({'Отклонено': 'Изменение данных пользователя недопустимо'})
         return data
+
+class UserPerevalSerializer(serializers.ModelSerializer):
+    coords = CoordsSerializer()
+    images = ImagesSerializer(many=True)
+    user = UsersSerializer()
+
+    class Meta:
+        model = PerevalAdded
+        fields = ('id', 'status', 'beauty_title', 'title',\
+                  'other_titles', 'connect', 'user', 'coords', \
+                  'images', 'winter', 'spring', 'summer', 'autumn')
