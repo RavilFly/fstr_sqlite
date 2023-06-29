@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 class Coords(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -9,6 +7,10 @@ class Coords(models.Model):
 
     class Meta:
         db_table = 'coords'
+
+    def __str__(self):
+        return f'Latitude: {self.latitude}, longitude: {self.longitude}, height: {self.height}'
+
 
 class PerevalAdded(models.Model):
     STATUS_CHOICE = [
@@ -30,7 +32,7 @@ class PerevalAdded(models.Model):
     spring = models.CharField(max_length=5, default='')
     summer = models.CharField(max_length=5, default='')
     autumn = models.CharField(max_length=5, default='')
-    coords = models.ForeignKey('Coords', on_delete=models.CASCADE)
+    coords = models.ForeignKey('Coords', on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         db_table = 'pereval_added'
