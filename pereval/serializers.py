@@ -28,9 +28,9 @@ class PerevalAddedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PerevalAdded
-        fields = ('id', 'beauty_title', 'title', \
+        fields = ('id', 'status', 'beauty_title', 'title',\
                   'other_titles', 'connect', 'user', 'coords', \
-                  'images', 'status')
+                  'images', 'winter', 'spring', 'summer', 'autumn')
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
