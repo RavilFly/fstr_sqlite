@@ -22,7 +22,7 @@ class PerevalAdded(models.Model):
 
     date_added = models.DateTimeField(auto_now_add=True)
     add_time = models.TimeField(auto_now_add=True)
-    raw_data = models.JSONField()
+#    raw_data = models.JSONField()
     status = models.CharField(max_length=15, choices=STATUS_CHOICE, default='new')
     beauty_title = models.TextField(blank=True, null=True)
     title = models.TextField(blank=True, null=True)
@@ -51,15 +51,17 @@ class PerevalAreas(models.Model):
 #         db_table = 'spr_activities_types'
 
 class Images(models.Model):
+    title = models.CharField(max_length=255)
+    pereval = models.ForeignKey(PerevalAdded, related_name="images", on_delete=models.CASCADE, blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
-    img = models.BinaryField()
+    img = models.ImageField()
 
     class Meta:
         db_table = 'images'
 
 class PerevalImages(models.Model):
     pereval = models.ForeignKey('PerevalAdded', on_delete=models.CASCADE)
-    image = models.ForeignKey('Images', on_delete=models.CASCADE)
+    image = models.ForeignKey('Images', on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         db_table = 'pereval_images'
