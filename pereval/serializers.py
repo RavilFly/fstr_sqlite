@@ -2,6 +2,11 @@ from drf_writable_nested import WritableNestedModelSerializer
 from rest_framework import serializers
 from .models import PerevalAdded, Coords, Images, Users
 
+class UserPerevalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PerevalAdded
+        fields = ('id', 'title')
+
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
@@ -59,14 +64,16 @@ class PerevalAddedSerializer(WritableNestedModelSerializer):
             instance_user = self.instance.user
             data_user = data.get('user')
             if data_user and (
-                instance_user.name != data_user['name'] or
+                (
+                instance_user.name != data_user['name'] and
+                instance_user.last_name != data_user['last_name'] and
+                instance_user.mid_name != data_user['mid_name']
+                ) or
                 instance_user.email != data_user['email'] or
                 instance_user.phone != data_user['phone']
+
             ):
-                # instance_user.last_name != data_user['last_name'],
-                # instance_user.mid_name != data_user['mid_name'],
-                #  or \
 
 
                 raise serializers.ValidationError({'Отклонено': 'Изменение данных пользователя недопустимо'})
-            return data
+        return data

@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.response import Response
-from .models import PerevalAdded
-from .serializers import PerevalAddedSerializer
+from .models import PerevalAdded, Users
+from .serializers import PerevalAddedSerializer, UserPerevalSerializer
 
 class SubmitData(generics. ListCreateAPIView):
     queryset = PerevalAdded.objects.all()
@@ -56,4 +56,12 @@ class UpdateSubmitData(generics.RetrieveUpdateAPIView):
         else:
             return Response({'state': '0', 'message':'Изменять можно только сообщения со статусом "new"'})
 
+class UserPerevalList(generics.ListAPIView):
+    serializer_class = UserPerevalSerializer
+
+    def get_queryset(self):
+        user = Users.objects.filter(email=self.kwargs['email'])[0]
+        queryset = PerevalAdded.objects.filter(user__email=user.email)
+
+        return queryset
 
