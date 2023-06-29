@@ -1,0 +1,4 @@
+/.env
+/fstr/__pycache__/
+pereval/__pycache__/
+pereval/migrations/__pycache__/
