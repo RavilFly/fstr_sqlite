@@ -36,3 +36,24 @@ class SubmitData(generics. ListCreateAPIView):
 class UpdateSubmitData(generics.RetrieveUpdateAPIView):
     queryset = PerevalAdded.objects.all()
     serializer_class = PerevalAddedSerializer
+
+    def patch(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        if not pk:
+            return Response({"error": "Method PATCH not allowed"})
+
+        try:
+            instance = PerevalAdded.objects.get(pk=pk)
+        except:
+            return Response({"error": "Object does not exists"})
+
+        if instance.status == 'new':
+            serializer = PerevalAddedSerializer(data=request.data, instance=instance)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response({'state': '1', 'message': "Запись обновлена"})
+
+        else:
+            return Response({'state': '0', 'message':'Изменять можно только сообщения со статусом "new"'})
+
+
