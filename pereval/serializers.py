@@ -53,3 +53,20 @@ class PerevalAddedSerializer(WritableNestedModelSerializer):
             Images.objects.create(pereval=pereval_added, img=img_, title=title_)
 
         return pereval_added
+
+    def validate(self, data):
+        if self.instance:
+            instance_user = self.instance.user
+            data_user = data.get('user')
+            if data_user and (
+                instance_user.name != data_user['name'] or
+                instance_user.email != data_user['email'] or
+                instance_user.phone != data_user['phone']
+            ):
+                # instance_user.last_name != data_user['last_name'],
+                # instance_user.mid_name != data_user['mid_name'],
+                #  or \
+
+
+                raise serializers.ValidationError({'Отклонено': 'Изменение данных пользователя недопустимо'})
+            return data
