@@ -22,7 +22,6 @@ class PerevalAdded(models.Model):
 
     date_added = models.DateTimeField(auto_now_add=True)
     add_time = models.TimeField(auto_now_add=True)
-#    raw_data = models.JSONField()
     status = models.CharField(max_length=15, choices=STATUS_CHOICE, default='new')
     beauty_title = models.TextField(blank=True, null=True)
     title = models.TextField(blank=True, null=True)
@@ -60,12 +59,6 @@ class Images(models.Model):
     class Meta:
         db_table = 'images'
 
-# class PerevalImages(models.Model):
-#     pereval = models.ForeignKey('PerevalAdded', on_delete=models.CASCADE)
-#     image = models.ForeignKey('Images', on_delete=models.CASCADE, blank=True, null=True)
-#
-#     class Meta:
-#         db_table = 'pereval_images'
 
 class Users(models.Model):
     name = models.CharField(max_length=255)
